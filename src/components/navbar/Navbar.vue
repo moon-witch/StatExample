@@ -6,8 +6,8 @@ import NavItem from './NavItem.vue';
   <nav class="nav">
     <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
     <ul class="list">
-      <NavItem title="Home"/>
-      <NavItem title="About"/>
+      <NavItem link="/" title="Home"/>
+      <NavItem link="/about" title="About"/>
     </ul>
   </nav>
 </template>

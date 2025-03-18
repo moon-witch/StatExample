@@ -3,12 +3,16 @@ defineProps({
   title: {
     type: String,
     required: true
+  },
+  link: {
+    type: String,
+    required: true
   }
 })
 </script>
 
 <template>
   <li>
-    <RouterLink to="/about">{{ title }}</RouterLink>
+    <RouterLink :to="link">{{ title }}</RouterLink>
   </li>
 </template>
