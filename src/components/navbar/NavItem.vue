@@ -13,6 +13,10 @@ const props = defineProps({
   icon: {
     type: String,
     required: true
+  },
+  active: {
+    type: Boolean,
+    required: true
   }
 })
 
@@ -31,7 +35,7 @@ watch(navBarComposable.navOpen, (newValue) => {
 
 <template>
   <li class="item">
-    <RouterLink :to="link" :class="{'open': navOpen}">
+    <RouterLink :to="link" :class="{'open': navOpen, 'active': active}">
       <img class="nav-icon" :src="iconPath" alt="nav icon" />
       <span class="text">{{ title }}</span>
     </RouterLink>
@@ -49,14 +53,20 @@ watch(navBarComposable.navOpen, (newValue) => {
     display: flex;
     align-items: center;
     gap: .5rem;
+    opacity: .5;
 
     &:hover {
       background: $highlight;
+      opacity: 1;
     }
 
     .nav-icon {
       width: 25px;
       transition: $transition;
+    }
+
+    &.active {
+      opacity: 1;
     }
 
     &:not(.open) {

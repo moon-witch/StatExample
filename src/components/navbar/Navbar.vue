@@ -2,9 +2,12 @@
 import NavItem from './NavItem.vue';
 import {useNavbar} from "@/composables/useNavbar.ts";
 import {provide, ref, watch} from "vue";
+import {useRoute} from "vue-router";
 
 const navBarComposable = useNavbar();
 provide('navBarComposable', navBarComposable)
+
+const route = useRoute()
 
 const navOpen = ref(true)
 
@@ -24,8 +27,8 @@ watch(navBarComposable.navOpen, (newValue) => {
     </button>
     <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
     <ul class="list">
-      <NavItem link="/" title="Home" icon="home"/>
-      <NavItem link="/about" title="About" icon="info"/>
+      <NavItem :active="route.fullPath === '/'" link="/" title="Home" icon="home"/>
+      <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
     </ul>
   </nav>
 </template>
