@@ -21,7 +21,7 @@
   border-bottom: 1px solid $darkgray;
 
   .logo {
-    width: 37px;
+    width: 45px;
   }
 }
 </style>

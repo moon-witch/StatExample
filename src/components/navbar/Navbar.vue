@@ -26,7 +26,7 @@ const route = useRoute()
   justify-content: start;
   align-items: center;
   padding: .25rem;
-  width: 35px;
+  width: 45px;
   transition: $transition;
   border-top: 1px solid $darkgray;
   border-right: 1px solid $darkgray;

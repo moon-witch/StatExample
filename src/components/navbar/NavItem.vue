@@ -49,7 +49,7 @@ const iconPath = computed(() => {
     opacity: .5;
 
     &:hover {
-      background: $highlight;
+      background: $lightgray;
       opacity: 1;
 
       .text {
@@ -62,14 +62,14 @@ const iconPath = computed(() => {
     }
 
     .nav-icon {
-      width: 15px;
+      width: 25px;
       transition: $transition;
       filter: invert(94%) sepia(1%) saturate(225%) hue-rotate(167deg) brightness(105%) contrast(97%);
       }
 
     &.active {
       opacity: 1;
-      background: $highlight;
+      background: $lightgray;
       color: $primary;
 
       .nav-icon {
