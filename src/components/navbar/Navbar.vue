@@ -7,7 +7,6 @@ const route = useRoute()
 
 <template>
   <nav class="nav">
-    <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
     <ul class="list">
       <NavItem :active="route.fullPath === '/'" link="/" title="Home" icon="home"/>
       <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
@@ -17,9 +16,9 @@ const route = useRoute()
 
 <style scoped lang="scss">
 .nav {
- background: $lightgray;
+ background: $primary;
   position: fixed;
-  height: calc(100dvh - 60px);
+  height: calc(100dvh - 67px);
   left: 0;
   bottom: 0;
   display: flex;
@@ -27,38 +26,26 @@ const route = useRoute()
   justify-content: start;
   align-items: center;
   padding: .25rem;
-  width: 30px;
+  width: 35px;
   transition: $transition;
+  border-top: 1px solid $darkgray;
+  border-right: 1px solid $darkgray;
 
   &:hover {
     width: 100px;
 
-    .logo {
-      width: 60px;
+    ::v-deep(a) {
+      gap: .5rem;
     }
 
     ::v-deep(.text) {
-      visibility: visible;
+      max-width: 200px;
+      opacity: 1;
       }
 
     ::v-deep(.nav-icon) {
       width: 25px;
     }
-  }
-
-  .toggle-button {
-    padding-top: .2rem;
-    margin-bottom: $spacer-sm;
-    background: $lightgray;
-    border: none;
-    border-radius: $radius;
-    cursor: pointer;
-  }
-
-  .logo {
-    width: 25px;
-    margin-bottom: $spacer-md;
-    transition: $transition;
   }
 
   .list {

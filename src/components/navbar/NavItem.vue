@@ -36,35 +36,52 @@ const iconPath = computed(() => {
 
 <style scoped lang="scss">
 .item {
-  margin: 1rem auto;
+  margin: .5rem auto;
   a {
-    color: $primary;
+    color: $text;
     padding: .25rem .5rem;
     border-radius: $radius;
     background: transparent;
     transition: $transition;
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: 0;
     opacity: .5;
 
     &:hover {
       background: $highlight;
       opacity: 1;
+
+      .text {
+        color: $primary;
+      }
+
+      .nav-icon {
+        filter: invert(11%) sepia(4%) saturate(1996%) hue-rotate(169deg) brightness(91%) contrast(89%);
+      }
     }
 
     .nav-icon {
       width: 15px;
       transition: $transition;
-    }
+      filter: invert(94%) sepia(1%) saturate(225%) hue-rotate(167deg) brightness(105%) contrast(97%);
+      }
 
     &.active {
       opacity: 1;
       background: $highlight;
+      color: $primary;
+
+      .nav-icon {
+        filter: invert(11%) sepia(4%) saturate(1996%) hue-rotate(169deg) brightness(91%) contrast(89%);
+      }
+
     }
 
     .text {
-      visibility: visible;
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
       transition: $transition;
     }
   }

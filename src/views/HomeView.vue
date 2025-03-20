@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <h1>DevHub</h1>
+    <div>DevHub</div>
   </main>
 </template>
