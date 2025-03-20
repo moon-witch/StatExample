@@ -1,30 +1,12 @@
 <script setup lang="ts">
 import NavItem from './NavItem.vue';
-import {useNavbar} from "@/composables/useNavbar.ts";
-import {provide, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 
-const navBarComposable = useNavbar();
-provide('navBarComposable', navBarComposable)
-
 const route = useRoute()
-
-const navOpen = ref(true)
-
-const toggleNavbar = () => {
-  navBarComposable.toggleNav()
-}
-
-watch(navBarComposable.navOpen, (newValue) => {
-  navOpen.value = newValue;
-})
 </script>
 
 <template>
-  <nav class="nav" :class="{ 'open': navOpen }">
-    <button class="toggle-button" @click="toggleNavbar">
-      <img class="arrow" src="@/assets/icons/arrow-left.png" alt="nav toggle button" />
-    </button>
+  <nav class="nav">
     <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
     <ul class="list">
       <NavItem :active="route.fullPath === '/'" link="/" title="Home" icon="home"/>
@@ -37,27 +19,29 @@ watch(navBarComposable.navOpen, (newValue) => {
 .nav {
  background: $lightgray;
   position: fixed;
+  height: calc(100dvh - 60px);
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   padding: .25rem;
-  border-top-right-radius: calc($radius * 2);
-  border-bottom-right-radius: calc($radius * 2);
-  width: 90px;
+  width: 30px;
   transition: $transition;
 
-  &:not(.open) {
-    width: 30px;
-
-    .arrow {
-      transform: rotate(180deg);
-    }
+  &:hover {
+    width: 100px;
 
     .logo {
+      width: 60px;
+    }
+
+    ::v-deep(.text) {
+      visibility: visible;
+      }
+
+    ::v-deep(.nav-icon) {
       width: 25px;
     }
   }
@@ -72,7 +56,7 @@ watch(navBarComposable.navOpen, (newValue) => {
   }
 
   .logo {
-    width: 60px;
+    width: 25px;
     margin-bottom: $spacer-md;
     transition: $transition;
   }
@@ -83,6 +67,7 @@ watch(navBarComposable.navOpen, (newValue) => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 }
 </style>

@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <h1>StatExample</h1>
+    <h1>DevHub</h1>
   </main>
 </template>

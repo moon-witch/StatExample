@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref, watch} from "vue";
+import {computed} from "vue";
 
 const props = defineProps({
   title: {
@@ -20,22 +20,14 @@ const props = defineProps({
   }
 })
 
-const navBarComposable: any = inject('navBarComposable')
-
 const iconPath = computed(() => {
   return "src/assets/icons/" + props.icon + ".png"
-})
-
-const navOpen = ref(true)
-
-watch(navBarComposable.navOpen, (newValue) => {
-  navOpen.value = newValue;
 })
 </script>
 
 <template>
   <li class="item">
-    <RouterLink :to="link" :class="{'open': navOpen, 'active': active}">
+    <RouterLink :to="link" :class="{'active': active}">
       <img class="nav-icon" :src="iconPath" alt="nav icon" />
       <span class="text">{{ title }}</span>
     </RouterLink>
@@ -49,6 +41,7 @@ watch(navBarComposable.navOpen, (newValue) => {
     color: $primary;
     padding: .25rem .5rem;
     border-radius: $radius;
+    background: transparent;
     transition: $transition;
     display: flex;
     align-items: center;
@@ -61,22 +54,18 @@ watch(navBarComposable.navOpen, (newValue) => {
     }
 
     .nav-icon {
-      width: 25px;
+      width: 15px;
       transition: $transition;
     }
 
     &.active {
       opacity: 1;
+      background: $highlight;
     }
 
-    &:not(.open) {
-      .text {
-        display: none;
-      }
-
-      .nav-icon {
-        width: 15px;
-      }
+    .text {
+      visibility: visible;
+      transition: $transition;
     }
   }
 }
