@@ -11,9 +11,13 @@ import ActionBar from "@/components/actionbar/ActionBar.vue";
       <Navbar />
     </div>
   </header>
-
-  <RouterView />
+  <div class="view-container">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped lang="scss">
+.view-container {
+  padding: $spacer-md;
+}
 </style>

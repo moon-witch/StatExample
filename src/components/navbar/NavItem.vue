@@ -37,10 +37,17 @@ const iconPath = computed(() => {
 <style scoped lang="scss">
 .item {
   margin: .5rem auto;
+  border-radius: $radius;
+  width: 100%;
+  transition: $transition;
+
+  &:hover {
+    background: $lightgray;
+  }
+
   a {
     color: $text;
     padding: .25rem .5rem;
-    border-radius: $radius;
     background: transparent;
     transition: $transition;
     display: flex;
@@ -49,7 +56,6 @@ const iconPath = computed(() => {
     opacity: .5;
 
     &:hover {
-      background: $lightgray;
       opacity: 1;
 
       .text {
@@ -70,6 +76,7 @@ const iconPath = computed(() => {
     &.active {
       opacity: 1;
       background: $lightgray;
+      border-radius: $radius;
       color: $primary;
 
       .nav-icon {

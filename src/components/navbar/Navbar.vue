@@ -8,7 +8,7 @@ const route = useRoute()
 <template>
   <nav class="nav">
     <ul class="list">
-      <NavItem :active="route.fullPath === '/'" link="/" title="Home" icon="home"/>
+      <NavItem :active="route.fullPath === '/'" link="/" title="Dashboard" icon="home"/>
       <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
     </ul>
   </nav>
@@ -26,13 +26,13 @@ const route = useRoute()
   justify-content: start;
   align-items: center;
   padding: .25rem;
-  width: 45px;
+  width: 41px;
   transition: $transition;
   border-top: 1px solid $darkgray;
   border-right: 1px solid $darkgray;
 
   &:hover {
-    width: 100px;
+    width: 150px;
 
     ::v-deep(a) {
       gap: .5rem;
