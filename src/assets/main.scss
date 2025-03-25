@@ -1,5 +1,5 @@
 @use 'styles/variables' as *;
-@use 'fonts/fonts' as *;
+@use './../../public/fonts/fonts' as *;
 
 html, body {
   margin: 0;
@@ -7,7 +7,7 @@ html, body {
   min-height: 100dvh;
   background: $bg;
   color: $text;
-  font-family: 'Bebas', sans-serif;
+  font-family: 'Nohemi', sans-serif;
 }
 
 #app {

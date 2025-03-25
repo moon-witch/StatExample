@@ -4,6 +4,7 @@
 <template>
   <section class="action-bar">
     <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
+    <span class="title">DevHub</span>
   </section>
 </template>
 
@@ -18,10 +19,16 @@
   display: flex;
   justify-content: start;
   align-items: center;
+  gap: .5rem;
   border-bottom: 1px solid $darkgray;
 
   .logo {
     width: 45px;
+    margin-left: .5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
   }
 }
 </style>

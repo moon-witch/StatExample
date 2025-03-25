@@ -30,6 +30,7 @@ const route = useRoute()
   transition: $transition;
   border-top: 1px solid $darkgray;
   border-right: 1px solid $darkgray;
+  z-index: 9;
 
   &:hover {
     width: 150px;

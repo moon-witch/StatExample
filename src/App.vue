@@ -2,6 +2,14 @@
 import { RouterView } from 'vue-router'
 import Navbar from './components/navbar/Navbar.vue';
 import ActionBar from "@/components/actionbar/ActionBar.vue";
+import { useSupabaseStore } from "@/stores/useSupabase.ts";
+import {onMounted} from "vue";
+
+const supabaseStore = useSupabaseStore();
+
+onMounted(() => {
+  supabaseStore.logIn()
+})
 </script>
 
 <template>
