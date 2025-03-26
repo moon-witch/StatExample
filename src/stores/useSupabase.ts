@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabaseClient.ts'
 
 export const useSupabaseStore = defineStore('supabase', () => {
+  const allProjects = ref<any[]>([])
   const projectData = ref<any[]>([])
 
   async function logIn() {
@@ -16,15 +17,38 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
-  async function getProjectData(){
+  async function getAllProjects() {
     try {
-      const { data } = await supabase.from('projects').select()
+      const { data } = await supabase
+        .from('projects')
+        .select()
+
       if (data) {
-        projectData.value = data
+        allProjects.value = data
       }
     } catch (e) {
       console.error(e)
     }
   }
-  return { projectData, logIn, getProjectData }
+
+  function resetTicketData() {
+    projectData.value = []
+  }
+
+  async function getTicketsForProject(projectId: string){
+    try {
+      const { data } = await supabase
+        .from('tasks')
+        .select()
+        .eq('project_id', projectId)
+
+      if (data) {
+        projectData.value = data
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return { allProjects, projectData, logIn, getAllProjects, resetTicketData, getTicketsForProject }
 })

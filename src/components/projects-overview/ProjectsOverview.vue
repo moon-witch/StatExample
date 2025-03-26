@@ -5,11 +5,11 @@ import {computed, onMounted, ref, watch} from "vue";
 const supabaseStore = useSupabaseStore();
 
 const getProjects = () => {
-  supabaseStore.getProjectData()
+  supabaseStore.getAllProjects()
 }
 
-const projectData = computed(() => {
-  return supabaseStore.projectData
+const allProjects = computed(() => {
+  return supabaseStore.allProjects
 })
 
 onMounted(() => {
@@ -21,7 +21,7 @@ onMounted(() => {
   <div>
     <h1>Your projects</h1>
     <section class="projects-container">
-      <article v-for="project in projectData" class="project">
+      <article v-for="project in allProjects" class="project">
         <RouterLink :to="`/project/${project.id}`">
           <h2 class="name">{{ project.name }}</h2>
           <p class="description">{{ project.description }}</p>

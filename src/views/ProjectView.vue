@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {useSupabaseStore} from "@/stores/useSupabase.ts";
-import {computed} from "vue";
+import {computed, onMounted, onUnmounted} from "vue";
+import TicketRow from "@/components/ticket-overview/TicketRow.vue";
 
 const route = useRoute()
 const supabaseStore = useSupabaseStore()
 
 const projectId = computed(() => Number(route.params.id))
 const projectData = computed(() => {
-  return supabaseStore.projectData.find((project) => project.id === projectId.value)
+  return supabaseStore.allProjects.find((project) => project.id === projectId.value)
+})
+const tickets = computed(() => {
+  return supabaseStore.projectData
+})
+
+onMounted(() => {
+  supabaseStore.getTicketsForProject(route.params.id.toString())
+})
+
+onUnmounted(() => {
+  supabaseStore.resetTicketData()
 })
 </script>
 
@@ -23,6 +35,9 @@ const projectData = computed(() => {
         <time>{{ projectData.end_date }}</time>
       </div>
     </header>
+    <section class="tickets">
+      <TicketRow v-for="ticket in tickets" :data="ticket" />
+    </section>
   </main>
 </template>
 
@@ -46,5 +61,16 @@ const projectData = computed(() => {
     margin-top: $spacer-sm;
     font-size: .9rem;
   }
+}
+
+.tickets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: $spacer-sm;
+  border: 1px solid $darkgray;
+  padding: $spacer-sm;
+  border-radius: $radius;
 }
 </style>
