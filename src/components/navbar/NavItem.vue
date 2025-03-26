@@ -90,6 +90,7 @@ const iconPath = computed(() => {
       max-width: 0;
       overflow: hidden;
       transition: $transition;
+      margin-top: 2px;
     }
   }
 }

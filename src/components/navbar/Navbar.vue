@@ -23,7 +23,7 @@ const route = useRoute()
   bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding: .25rem;
   width: 41px;

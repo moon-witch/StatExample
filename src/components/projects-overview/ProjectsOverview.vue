@@ -20,17 +20,19 @@ onMounted(() => {
 <template>
   <div>
     <h1>Your projects</h1>
-    <div class="projects-container">
-      <div v-for="project in projectData" class="project">
-        <div class="name">{{ project.name }}</div>
-        <div class="description">{{ project.description }}</div>
-        <div class="data">
-          <div class="start">{{ project.start_date }}</div>
-          -
-          <div class="end">{{ project.end_date }}</div>
-        </div>
-      </div>
-    </div>
+    <section class="projects-container">
+      <article v-for="project in projectData" class="project">
+        <RouterLink :to="`/project/${project.id}`">
+          <h2 class="name">{{ project.name }}</h2>
+          <p class="description">{{ project.description }}</p>
+          <div class="data">
+            <time>{{ project.start_date }}</time>
+            -
+            <time>{{ project.end_date }}</time>
+          </div>
+        </RouterLink>
+      </article>
+    </section>
   </div>
 </template>
 
@@ -49,12 +51,18 @@ onMounted(() => {
     transition: $transition;
     cursor: pointer;
 
+    a {
+      color: $text;
+    }
+
     &:hover {
       box-shadow: $box-shadow;
     }
 
     .name {
       font-weight: bold;
+      font-size: 1.25rem;
+      margin-top: 0;
     }
 
     .data {
