@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {useSupabaseStore} from "@/stores/useSupabase.ts";
+import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 import {computed, onMounted, onUnmounted} from "vue";
 import TicketRow from "@/components/ticket-overview/TicketRow.vue";
+import Loading from "@/components/Loading.vue";
 
 const route = useRoute()
 const supabaseStore = useSupabaseStore()
@@ -13,6 +14,10 @@ const projectData = computed(() => {
 })
 const tickets = computed(() => {
   return supabaseStore.projectData
+})
+
+const ticketsLoading = computed(() => {
+  return supabaseStore.ticketsLoading
 })
 
 onMounted(() => {
@@ -37,7 +42,8 @@ onUnmounted(() => {
       </div>
     </header>
     <section class="tickets">
-      <TicketRow v-for="ticket in tickets" :data="ticket" />
+      <Loading v-if="ticketsLoading" />
+      <TicketRow v-else v-for="ticket in tickets" :data="ticket" />
     </section>
   </main>
 </template>

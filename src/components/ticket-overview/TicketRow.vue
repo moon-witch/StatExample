@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import {computed, defineProps, onMounted} from 'vue'
 import { truncateText } from "@/helpers/truncateText.ts";
+import {useUserName} from "@/composables/useUserName.ts";
+import {getInitials} from "@/helpers/getInitials.ts";
 
 const props = defineProps({
   data: {
@@ -8,11 +10,21 @@ const props = defineProps({
     required: true,
   }
 })
+
+const userNameComposable = useUserName()
+
+const userName = computed(() => {
+  return userNameComposable.currentUserName.value[0] ? getInitials(userNameComposable.currentUserName.value[0].first_name, userNameComposable.currentUserName.value[0].last_name) : ''
+  })
+
+onMounted(() => {
+  userNameComposable.getUserNameFromId(props.data.assigned_to)
+})
 </script>
 
 <template>
   <section v-if="data" class="ticket-container">
-    <span class="assignee">JL</span>
+    <span class="assignee">{{ userName }}</span>
     <span class="title">
       {{ truncateText(data.title, 15) }}
       <span class="tooltip">
@@ -42,8 +54,10 @@ const props = defineProps({
 
   .assignee {
     border: 1px solid $darkgray;
-    padding: .5rem;
+    padding: .5rem .5rem .35rem .5rem;
     border-radius: 100px;
+    background: $lightgray;
+    color: $primary;
   }
 
   .title {

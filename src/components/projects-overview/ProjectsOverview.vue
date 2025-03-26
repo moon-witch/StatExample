@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSupabaseStore } from "@/stores/useSupabase.ts";
+import { useSupabaseStore } from "@/stores/supabaseStore.ts";
 import {computed, onMounted, ref, watch} from "vue";
 
 const supabaseStore = useSupabaseStore();

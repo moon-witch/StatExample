@@ -5,17 +5,7 @@ import { supabase } from '@/lib/supabaseClient.ts'
 export const useSupabaseStore = defineStore('supabase', () => {
   const allProjects = ref<any[]>([])
   const projectData = ref<any[]>([])
-
-  async function logIn() {
-    try {
-      const {data, error} = await supabase.auth.signInWithPassword({
-        email: 'admin@admin.com',
-        password: 'admin',
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const ticketsLoading = ref<boolean>(true)
 
   async function getAllProjects() {
     try {
@@ -36,6 +26,7 @@ export const useSupabaseStore = defineStore('supabase', () => {
   }
 
   async function getTicketsForProject(projectId: string){
+    ticketsLoading.value = true
     try {
       const { data } = await supabase
         .from('tasks')
@@ -47,8 +38,10 @@ export const useSupabaseStore = defineStore('supabase', () => {
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      ticketsLoading.value = false
     }
   }
 
-  return { allProjects, projectData, logIn, getAllProjects, resetTicketData, getTicketsForProject }
+  return { allProjects, projectData, ticketsLoading, getAllProjects, resetTicketData, getTicketsForProject }
 })

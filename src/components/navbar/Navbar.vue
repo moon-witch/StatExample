@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import NavItem from './NavItem.vue';
 import {useRoute} from "vue-router";
+import {useUserStore} from "@/stores/userStore.ts";
+import {computed, onMounted} from "vue";
+import {getInitials} from "@/helpers/getInitials.ts";
 
 const route = useRoute()
+
+const userStore = useUserStore()
+
+const userInitials = computed(() => {
+  return userStore.currentUserProfileData[0] ? getInitials(userStore.currentUserProfileData[0].first_name, userStore.currentUserProfileData[0].last_name) : null
+})
+
+onMounted(() => {
+  userStore.getCurrentUser()
+})
 </script>
 
 <template>
@@ -11,6 +24,7 @@ const route = useRoute()
       <NavItem :active="route.fullPath === '/'" link="/" title="Dashboard" icon="home"/>
       <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
     </ul>
+    <div class="initials">{{ userInitials }}</div>
   </nav>
 </template>
 
@@ -23,7 +37,7 @@ const route = useRoute()
   bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding: .25rem;
   width: 41px;
@@ -56,6 +70,13 @@ const route = useRoute()
     align-items: center;
     justify-content: center;
     overflow: hidden;
+  }
+
+  .initials {
+    border: 1px solid $darkgray;
+    border-radius: $radius;
+    padding: .5rem;
+    margin-bottom: $spacer-sm;
   }
 }
 </style>

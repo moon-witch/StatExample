@@ -2,13 +2,17 @@
 import { RouterView } from 'vue-router'
 import Navbar from './components/navbar/Navbar.vue';
 import ActionBar from "@/components/actionbar/ActionBar.vue";
-import { useSupabaseStore } from "@/stores/useSupabase.ts";
-import {onMounted} from "vue";
+import {computed, onMounted} from "vue";
+import {useUserStore} from "@/stores/userStore.ts";
 
-const supabaseStore = useSupabaseStore();
+const userStore = useUserStore();
+
+const userName = computed(() => {
+  return userStore.currentUserProfileData
+})
 
 onMounted(() => {
-  supabaseStore.logIn()
+  userStore.logIn()
 })
 </script>
 
