@@ -16,6 +16,7 @@ const tickets = computed(() => {
 })
 
 onMounted(() => {
+  supabaseStore.getAllProjects()
   supabaseStore.getTicketsForProject(route.params.id.toString())
 })
 

@@ -21,7 +21,7 @@ const props = defineProps({
 })
 
 const iconPath = computed(() => {
-  return "src/assets/icons/" + props.icon + ".png"
+  return `/icons/${props.icon}.png`
 })
 </script>
 

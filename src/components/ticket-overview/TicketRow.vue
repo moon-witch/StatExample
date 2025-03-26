@@ -27,6 +27,7 @@ const props = defineProps({
 <style scoped lang="scss">
 .ticket-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: .5rem;
   border: 1px solid $darkgray;
