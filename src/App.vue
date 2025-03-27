@@ -30,6 +30,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .view-container {
-  padding: $spacer-md;
+  margin-top: 100px;
+  padding: 0 $spacer-md;
 }
 </style>

@@ -4,7 +4,6 @@ import { truncateText } from "@/helpers/truncateText.ts";
 import {useUserName} from "@/composables/useUserName.ts";
 import {getInitials} from "@/helpers/getInitials.ts";
 import Select from "@/components/select/Select.vue";
-import {supabase} from "@/lib/supabaseClient.ts";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];

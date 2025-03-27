@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient.ts'
 export const useUserStore = defineStore('user', () => {
   const currentUserAuthData = ref<Record<string, any>>([])
   const currentUserProfileData = ref<Record<string, any>>([])
+  const allUsers = ref<Record<string, any>>([])
 
   async function logIn() {
     try {
@@ -41,5 +42,23 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { currentUserAuthData, currentUserProfileData, logIn, getCurrentUser }
+  async function getUserList() {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name')
+
+      if(data) {
+        allUsers.value = data
+      }
+
+      if (error) {
+        console.error(error)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  return { currentUserAuthData, currentUserProfileData, allUsers, getUserList, logIn, getCurrentUser }
 })
