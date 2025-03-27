@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, defineProps, onMounted} from 'vue'
+import {computed, defineProps, onMounted, ref} from 'vue'
 import { truncateText } from "@/helpers/truncateText.ts";
 import {useUserName} from "@/composables/useUserName.ts";
 import {getInitials} from "@/helpers/getInitials.ts";
@@ -20,9 +20,15 @@ const props = defineProps({
 const userNameComposable = useUserName()
 const supabaseStore = useSupabaseStore()
 
+const fullUserName = ref<string>('')
 const userName = computed(() => {
-  return userNameComposable.currentUserName.value[0] ? getInitials(userNameComposable.currentUserName.value[0].first_name, userNameComposable.currentUserName.value[0].last_name) : ''
-  })
+  const user = userNameComposable.currentUserName.value[0];
+
+  if (!user) return '';
+
+  fullUserName.value = `${user.first_name} ${user.last_name}`;
+  return getInitials(user.first_name, user.last_name);
+});
 
 const updatePriority = (newPrio: string, ticketId: string) => {
   supabaseStore.updateTicketData('priority', newPrio, ticketId)
@@ -39,7 +45,13 @@ onMounted(() => {
 
 <template>
   <section v-if="data" class="ticket-container">
-    <span class="assignee">{{ userName }}</span>
+    <span class="ticket-id"> {{ data.id }} </span>
+    <span class="assignee">
+      {{ userName }}
+      <span class="tooltip">
+        {{ fullUserName }}
+      </span>
+    </span>
     <span class="title">
       {{ truncateText(data.title, 15) }}
       <span class="tooltip">
@@ -81,12 +93,44 @@ onMounted(() => {
     border: 1px solid $lightgray;
   }
 
+  .ticket-id {
+    width: 20px;
+  }
+
   .assignee {
     border: 1px solid $darkgray;
     padding: .5rem .5rem .35rem .5rem;
     border-radius: 100px;
     background: $lightgray;
     color: $primary;
+    position: relative;
+
+    &:hover {
+      .tooltip {
+        max-width: 100px;
+        padding: calc($spacer-sm / 2) $spacer-sm;
+        border: 1px solid $darkgray;
+        opacity: 1;
+      }
+    }
+
+    .tooltip {
+      max-width: 0;
+      background-color: $primary;
+      color: $text;
+      font-size: .9rem;
+      text-align: center;
+      border-radius: $radius;
+      position: absolute;
+      z-index: 1;
+      bottom: calc(100% + 5px);
+      left: 50%;
+      margin-left: -20px;
+      transition: $transition;
+      overflow: hidden;
+      opacity: 0;
+      text-wrap: nowrap;
+    }
   }
 
   .title {
