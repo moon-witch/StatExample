@@ -22,12 +22,18 @@ watch(selectedOption, (newVal) => {
 </script>
 
 <template>
-  <select v-model="selectedOption">
-    <option v-for="option in options" :value="option">{{ option }}</option>
-  </select>
+  <span class="select-wrapper" @click.stop>
+    <select v-model="selectedOption">
+      <option v-for="option in options" :value="option">{{ option }}</option>
+    </select>
+  </span>
 </template>
 
 <style scoped lang="scss">
+.select-wrapper {
+  width: fit-content;
+}
+
 select {
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -39,9 +45,11 @@ select {
   border: 1px solid $darkgray;
   border-radius: $radius;
   font-family: 'Nohemi', sans-serif;
+  cursor: pointer;
 
   option {
     background: $primary;
+    cursor: pointer;
   }
 }
 </style>

@@ -30,6 +30,7 @@ const resetDemoData = () => {
   align-items: center;
   gap: .5rem;
   border-bottom: 1px solid $darkgray;
+  background: $primary;
 
   .logo {
     width: 45px;

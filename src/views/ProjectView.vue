@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
-import {computed, onMounted, onUnmounted} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 import TicketRow from "@/components/ticket-overview/TicketRow.vue";
 import Loading from "@/components/Loading.vue";
 import { sortArrayOfObjects } from "@/helpers/sortArrayOfObjects.ts";
+import NewTicketDrawer from "@/components/drawer/NewTicketDrawer.vue";
 
 const route = useRoute()
 const supabaseStore = useSupabaseStore()
@@ -14,6 +15,7 @@ const projectData = computed(() => {
   return supabaseStore.allProjects.find((project) => project.id === projectId.value)
 })
 
+const newTicketOpen = ref<boolean>(false)
 const tickets = computed(() => {
   return sortArrayOfObjects(supabaseStore.projectData, 'id')
 })
@@ -45,8 +47,9 @@ onUnmounted(() => {
     </header>
     <section class="tickets">
       <Loading v-if="ticketsLoading" />
-      <TicketRow v-else v-for="ticket in tickets" :data="ticket" />
+      <TicketRow v-else v-for="ticket in tickets" :data="ticket" @click="newTicketOpen = true"/>
     </section>
+    <NewTicketDrawer :is-open="newTicketOpen" @close="newTicketOpen = false" />
   </main>
 </template>
 
