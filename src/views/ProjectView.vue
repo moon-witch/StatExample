@@ -4,6 +4,7 @@ import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 import {computed, onMounted, onUnmounted} from "vue";
 import TicketRow from "@/components/ticket-overview/TicketRow.vue";
 import Loading from "@/components/Loading.vue";
+import { sortArrayOfObjects } from "@/helpers/sortArrayOfObjects.ts";
 
 const route = useRoute()
 const supabaseStore = useSupabaseStore()
@@ -12,8 +13,9 @@ const projectId = computed(() => Number(route.params.id))
 const projectData = computed(() => {
   return supabaseStore.allProjects.find((project) => project.id === projectId.value)
 })
+
 const tickets = computed(() => {
-  return supabaseStore.projectData
+  return sortArrayOfObjects(supabaseStore.projectData, 'id')
 })
 
 const ticketsLoading = computed(() => {

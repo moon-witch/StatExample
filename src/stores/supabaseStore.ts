@@ -43,5 +43,30 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
-  return { allProjects, projectData, ticketsLoading, getAllProjects, resetTicketData, getTicketsForProject }
+  async function updateTicketData(field: string, newVal: string, ticketId: string) {
+    try {
+      const { error } = await supabase
+        .from('tasks')
+        .update({ [field]: newVal })
+        .eq('id', ticketId)
+
+      if (error) console.log(error)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function resetDemoData() {
+    try {
+      const { error } = await supabase.rpc('reset_demo_data')
+
+      if (error) {
+        console.error(error)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return { allProjects, projectData, ticketsLoading, getAllProjects, resetTicketData, getTicketsForProject, updateTicketData, resetDemoData }
 })

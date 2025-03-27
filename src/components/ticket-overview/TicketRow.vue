@@ -3,6 +3,12 @@ import {computed, defineProps, onMounted} from 'vue'
 import { truncateText } from "@/helpers/truncateText.ts";
 import {useUserName} from "@/composables/useUserName.ts";
 import {getInitials} from "@/helpers/getInitials.ts";
+import Select from "@/components/select/Select.vue";
+import {supabase} from "@/lib/supabaseClient.ts";
+import {useSupabaseStore} from "@/stores/supabaseStore.ts";
+
+const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
+const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done'];
 
 const props = defineProps({
   data: {
@@ -12,10 +18,19 @@ const props = defineProps({
 })
 
 const userNameComposable = useUserName()
+const supabaseStore = useSupabaseStore()
 
 const userName = computed(() => {
   return userNameComposable.currentUserName.value[0] ? getInitials(userNameComposable.currentUserName.value[0].first_name, userNameComposable.currentUserName.value[0].last_name) : ''
   })
+
+const updatePriority = (newPrio: string, ticketId: string) => {
+  supabaseStore.updateTicketData('priority', newPrio, ticketId)
+}
+
+const updateStatus = (newStatus: string, ticketId: string) => {
+  supabaseStore.updateTicketData('status', newStatus, ticketId)
+}
 
 onMounted(() => {
   userNameComposable.getUserNameFromId(props.data.assigned_to)
@@ -31,8 +46,22 @@ onMounted(() => {
         {{ data.title }}
       </span>
     </span>
-    <span class="priority">Priority: {{ data.priority }}</span>
-    <span class="status">Status: {{ data.status }}</span>
+    <span class="priority">
+      Priority:
+      <Select
+        :options="PRIORITY_OPTIONS"
+        :selected-option="data.priority"
+        @selected="updatePriority($event, data.id)"
+      />
+    </span>
+    <span class="status">
+      Status:
+      <Select
+        :options="STATUS_OPTIONS"
+        :selected-option="data.status"
+        @selected="updateStatus($event, data.id)"
+      />
+    </span>
   </section>
 </template>
 
