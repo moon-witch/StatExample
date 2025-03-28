@@ -35,6 +35,7 @@ const showDrawer = computed(() => {
 
 const closeDrawer = () => {
   emit('close');
+  resetForm()
 }
 
 const form = reactive({
@@ -46,6 +47,19 @@ const form = reactive({
   project_id: '',
   assigned_to: ''
 })
+
+const resetForm = () => {
+  form.title = ''
+  form.description = ''
+  form.priority = ''
+  form.status = ''
+  form.due_date = ''
+  form.project_id = ''
+  form.assigned_to = ''
+  Object.keys(errors).forEach((key) => {
+    errors[key] = ''
+  })
+}
 
 const errors = reactive<Record<string, string>>({})
 
@@ -148,7 +162,7 @@ h2 {
 
     input,
     textarea {
-      padding: .5rem $spacer-sm;
+      padding: .25rem .5rem;
       border: 1px solid $darkgray;
       border-radius: $radius;
       background: $primary;
@@ -190,6 +204,7 @@ h2 {
     border-radius: $radius;
     cursor: pointer;
     font-weight: bold;
+    transition: $transition;
 
     &:hover {
       background-color: $darkgray;
