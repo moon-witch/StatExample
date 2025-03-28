@@ -54,10 +54,7 @@ onUnmounted(() => {
       </div>
       <Loading v-if="ticketsLoading" />
       <TicketRow class="row" v-for="ticket in tickets" :data="ticket" />
-      <TicketRow class="row" v-for="ticket in tickets" :data="ticket" />
-      <TicketRow class="row" v-for="ticket in tickets" :data="ticket" />
-      <TicketRow class="row" v-for="ticket in tickets" :data="ticket" />
-    </section>
+     </section>
     <NewTicketDrawer :project="projectData" :is-open="newTicketOpen" @close="newTicketOpen = false" />
   </main>
 </template>

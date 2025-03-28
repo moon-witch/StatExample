@@ -3,6 +3,7 @@ import {computed, onMounted, reactive, ref} from "vue";
 import Drawer from "@/components/drawer/Drawer.vue";
 import {useUserStore} from "@/stores/userStore.ts";
 import CustomSelect from "@/components/select/Select.vue";
+import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
 const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done']
@@ -22,6 +23,7 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const userStore = useUserStore()
+const supabaseStore = useSupabaseStore()
 
 const userList = computed(() => {
   return userStore.allUsers
@@ -60,10 +62,11 @@ function validate() {
 
 
 function handleSubmit() {
+  if (props.project) form.project_id = props.project.id
   if (!validate()) return
 
-  // Submit the form — you can emit or call a store action here
-  console.log('Form submitted!', form)
+  supabaseStore.createNewTicket(form)
+  closeDrawer()
 }
 
 onMounted(() => {
@@ -85,16 +88,18 @@ onMounted(() => {
         Description
         <textarea v-model="form.description" rows="4" />
       </label>
-      <label>
-        Priority
-        <CustomSelect :options="PRIORITY_OPTIONS" selected-option="choose priority" @selected="form.priority = $event"/>
-        <span v-if="errors.priority" class="error">{{ errors.priority }}</span>
-      </label>
-      <label>
-        Status
-        <CustomSelect :options="STATUS_OPTIONS" selected-option="choose priority" @selected="form.status = $event"/>
-        <span v-if="errors.status" class="error">{{ errors.status }}</span>
-      </label>
+      <div class="prio-status">
+        <label>
+          Priority
+          <CustomSelect :options="PRIORITY_OPTIONS" selected-option="choose priority" @selected="form.priority = $event"/>
+          <span v-if="errors.priority" class="error">{{ errors.priority }}</span>
+        </label>
+        <label>
+          Status
+          <CustomSelect :options="STATUS_OPTIONS" selected-option="choose priority" @selected="form.status = $event"/>
+          <span v-if="errors.status" class="error">{{ errors.status }}</span>
+        </label>
+      </div>
       <label>
         Due Date
         <input v-model="form.due_date" type="date" />
@@ -126,11 +131,20 @@ h2 {
   flex-direction: column;
   gap: $spacer-sm;
 
+  .prio-status {
+    display: flex;
+    justify-content: space-between;
+  }
+
   label {
     display: flex;
     flex-direction: column;
     font-weight: bold;
     gap: .25rem;
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(.9);
+    }
 
     input,
     textarea {
@@ -147,7 +161,7 @@ h2 {
     }
 
     .error {
-      color: red;
+      color: $warning;
       font-size: 0.85rem;
     }
 
@@ -156,6 +170,13 @@ h2 {
       color: $text;
       border: 1px solid $darkgray;
       border-radius: $radius;
+      font-family: 'Nohemi', sans-serif;
+      padding: .5rem $spacer-sm;
+
+      option:hover {
+        background: $darkgray;
+        color: red;
+      }
     }
   }
 
