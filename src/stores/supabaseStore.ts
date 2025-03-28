@@ -43,7 +43,7 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
-  async function updateTicketData(field: string, newVal: string, ticketId: string) {
+  async function updateSingleTicketField(field: string, newVal: string, ticketId: string) {
     try {
       const { error } = await supabase
         .from('tasks')
@@ -58,11 +58,28 @@ export const useSupabaseStore = defineStore('supabase', () => {
 
   async function createNewTicket(newTicketData: Record<string, any>) {
     try {
-      await supabase
+      const { error } = await supabase
         .from('tasks')
         .insert(newTicketData)
 
       await getTicketsForProject(newTicketData.project_id)
+
+      if (error) console.log(error)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function updateTicketData(updatedData: Record<string, any>) {
+    try {
+      const {error} = await supabase
+        .from('tasks')
+        .update(updatedData)
+        .eq('id', updatedData.id)
+
+      await getTicketsForProject(updatedData.project_id)
+
+      if (error) console.log(error)
     } catch (error) {
       console.error(error)
     }
@@ -80,5 +97,15 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
-  return { allProjects, projectData, ticketsLoading, getAllProjects, resetTicketData, getTicketsForProject, updateTicketData, createNewTicket, resetDemoData }
+  return {
+    allProjects,
+    projectData,
+    ticketsLoading,
+    getAllProjects,
+    resetTicketData,
+    getTicketsForProject,
+    updateSingleTicketField,
+    updateTicketData,
+    createNewTicket,
+    resetDemoData }
 })

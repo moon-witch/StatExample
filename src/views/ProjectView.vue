@@ -6,6 +6,7 @@ import TicketRow from "@/components/ticket-overview/TicketRow.vue";
 import Loading from "@/components/Loading.vue";
 import { sortArrayOfObjects } from "@/helpers/sortArrayOfObjects.ts";
 import NewTicketDrawer from "@/components/drawer/NewTicketDrawer.vue";
+import EditTicketDrawer from "@/components/drawer/EditTicketDrawer.vue";
 
 const route = useRoute()
 const supabaseStore = useSupabaseStore()
@@ -16,6 +17,7 @@ const projectData = computed(() => {
 })
 
 const newTicketOpen = ref<boolean>(false)
+const editTicketOpen = ref<boolean>(false)
 const tickets = computed(() => {
   return sortArrayOfObjects(supabaseStore.projectData, 'id')
 })
@@ -23,6 +25,12 @@ const tickets = computed(() => {
 const ticketsLoading = computed(() => {
   return supabaseStore.ticketsLoading
 })
+
+const openTicket = ref<Record<string, any>>({})
+const handleEditTicket = (ticketData: Record<string, any>) => {
+  openTicket.value = ticketData
+  editTicketOpen.value = true
+}
 
 onMounted(() => {
   supabaseStore.getAllProjects()
@@ -53,9 +61,10 @@ onUnmounted(() => {
         <button class="new-project" @click="newTicketOpen = true">+</button>
       </div>
       <Loading v-if="ticketsLoading" />
-      <TicketRow class="row" v-for="ticket in tickets" :data="ticket" />
+      <TicketRow class="row" v-for="ticket in tickets" :data="ticket" @click="handleEditTicket(ticket)"/>
      </section>
     <NewTicketDrawer :project="projectData" :is-open="newTicketOpen" @close="newTicketOpen = false" />
+    <EditTicketDrawer :ticket="openTicket" :project="projectData" :is-open="editTicketOpen" @close="editTicketOpen = false"/>
   </main>
 </template>
 

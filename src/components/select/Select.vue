@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 const props = defineProps({
   options: {
@@ -9,16 +9,21 @@ const props = defineProps({
   selectedOption: {
     type: String,
     required: true,
+    default: ''
   }
 })
 
 const emit = defineEmits(['selected'])
 
-const selectedOption = ref<string>(props.selectedOption)
+const selectedOption = ref<string>('')
 
 watch(selectedOption, (newVal) => {
   emit("selected", newVal)
 })
+
+watch(() => props.selectedOption, (newVal) => {
+  selectedOption.value = newVal
+}, {immediate: true})
 </script>
 
 <template>

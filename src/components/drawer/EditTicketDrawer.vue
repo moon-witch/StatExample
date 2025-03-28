@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import Drawer from "@/components/drawer/Drawer.vue";
 import {useUserStore} from "@/stores/userStore.ts";
 import CustomSelect from "@/components/select/Select.vue";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
+import {getInitials} from "@/helpers/getInitials.ts";
+import {useUserName} from "@/composables/useUserName.ts";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
 const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done']
@@ -16,7 +18,12 @@ const props = defineProps({
   },
   project: {
     type: Object,
-    default: null
+    required: true,
+    default: () => {}
+  },
+  ticket: {
+    type: Object,
+    required: true
   }
 })
 
@@ -45,7 +52,8 @@ const form = reactive({
   status: '',
   due_date: '',
   project_id: '',
-  assigned_to: ''
+  assigned_to: '',
+  id: ''
 })
 
 const resetForm = () => {
@@ -56,6 +64,7 @@ const resetForm = () => {
   form.due_date = ''
   form.project_id = ''
   form.assigned_to = ''
+  form.id = ''
   Object.keys(errors).forEach((key) => {
     errors[key] = ''
   })
@@ -68,7 +77,8 @@ function validate() {
   errors.priority = form.priority ? '' : 'Priority is required'
   errors.status = form.status ? '' : 'Status is required'
   errors.due_date = form.due_date ? '' : 'Due date is required'
-  errors.project_id = form.project_id ? '' : 'Project is required'
+  errors.project_id = form.project_id ? '' : 'Project id is required'
+  errors.ticket_id = form.id ? '' : 'Ticket id is required'
   errors.assigned_to = form.assigned_to ? '' : 'Assignee is required'
 
   return Object.values(errors).every((error) => !error)
@@ -77,20 +87,38 @@ function validate() {
 
 async function handleSubmit() {
   if (props.project) form.project_id = props.project.id
+  if (props.ticket) form.id = props.ticket.id
   if (!validate()) return
 
-  await supabaseStore.createNewTicket(form)
+  await supabaseStore.updateTicketData(form)
   closeDrawer()
 }
 
 onMounted(() => {
   userStore.getUserList()
 })
+
+watch(
+  () => props.ticket,
+  (newTicket) => {
+    if (!newTicket) return
+
+    form.title = newTicket.title
+    form.description = newTicket.description
+    form.priority = newTicket.priority
+    form.status = newTicket.status
+    form.due_date = newTicket.due_date
+    form.project_id = newTicket.project_id
+    form.assigned_to = newTicket.assigned_to
+    form.id = newTicket.id
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <Drawer :is-open="showDrawer" @close="closeDrawer">
-    <h2>Create new ticket</h2>
+    <h2>Edit ticket <span v-if="ticket">{{ ticket.id }}</span></h2>
     <p v-if="project">in {{ project.name }}</p>
     <form @submit.prevent="handleSubmit" class="ticket-form">
       <label>
@@ -105,12 +133,12 @@ onMounted(() => {
       <div class="prio-status">
         <label>
           Priority
-          <CustomSelect :options="PRIORITY_OPTIONS" selected-option="choose priority" @selected="form.priority = $event"/>
+          <CustomSelect :options="PRIORITY_OPTIONS" :selected-option="ticket.priority" @selected="form.priority = $event"/>
           <span v-if="errors.priority" class="error">{{ errors.priority }}</span>
         </label>
         <label>
           Status
-          <CustomSelect :options="STATUS_OPTIONS" selected-option="choose priority" @selected="form.status = $event"/>
+          <CustomSelect :options="STATUS_OPTIONS" :selected-option="ticket.status" @selected="form.status = $event"/>
           <span v-if="errors.status" class="error">{{ errors.status }}</span>
         </label>
       </div>
@@ -130,7 +158,7 @@ onMounted(() => {
         <span v-if="errors.assigned_to" class="error">{{ errors.assigned_to }}</span>
       </label>
 
-      <button type="submit">Create Ticket</button>
+      <button type="submit">Save changes</button>
     </form>
   </Drawer>
 </template>
@@ -168,6 +196,7 @@ h2 {
       background: $primary;
       color: $text;
       font-size: 1rem;
+      font-family: 'Nohemi', sans-serif;
 
       &:focus {
         outline: 1px solid $lightgray;
