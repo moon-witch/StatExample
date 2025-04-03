@@ -5,6 +5,7 @@ import {useUserName} from "@/composables/useUserName.ts";
 import {getInitials} from "@/helpers/getInitials.ts";
 import Select from "@/components/select/Select.vue";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
+import Tooltip from "@/components/Tooltip.vue";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
 const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done'];
@@ -45,18 +46,14 @@ onMounted(() => {
 <template>
   <section v-if="data" class="ticket-container">
     <span class="ticket-id"> {{ data.id }} </span>
-    <span class="assignee">
-      {{ userName }}
-      <span class="tooltip">
-        {{ fullUserName }}
+    <Tooltip :text="fullUserName">
+      <span class="assignee">
+        {{ userName }}
       </span>
-    </span>
-    <span class="title">
+    </Tooltip>
+    <Tooltip :text="data.title" bold wrap-width="150px">
       {{ truncateText(data.title, 15) }}
-      <span class="tooltip">
-        {{ data.title }}
-      </span>
-    </span>
+    </Tooltip>
     <span class="priority">
       Priority:
       <Select
@@ -102,67 +99,6 @@ onMounted(() => {
     border-radius: 100px;
     background: $lightgray;
     color: $primary;
-    position: relative;
-
-    &:hover {
-      .tooltip {
-        max-width: 100px;
-        padding: calc($spacer-sm / 2) $spacer-sm;
-        border: 1px solid $darkgray;
-        opacity: 1;
-      }
-    }
-
-    .tooltip {
-      max-width: 0;
-      background-color: $primary;
-      color: $text;
-      font-size: .9rem;
-      text-align: center;
-      border-radius: $radius;
-      position: absolute;
-      z-index: 1;
-      bottom: calc(100% + 5px);
-      left: 50%;
-      margin-left: -20px;
-      transition: $transition;
-      overflow: hidden;
-      opacity: 0;
-      text-wrap: nowrap;
-    }
-  }
-
-  .title {
-    font-weight: bold;
-    width: 150px;
-    position: relative;
-
-    &:hover {
-      .tooltip {
-        max-width: 200px;
-        padding: calc($spacer-sm / 2) $spacer-sm;
-        border: 1px solid $darkgray;
-        opacity: 1;
-      }
-    }
-
-    .tooltip {
-      max-width: 0;
-      background-color: $primary;
-      color: $text;
-      font-size: .9rem;
-      text-align: center;
-      border-radius: $radius;
-      position: absolute;
-      z-index: 1;
-      bottom: calc(100% + 5px);
-      left: 50%;
-      margin-left: -75px;
-      transition: $transition;
-      overflow: hidden;
-      opacity: 0;
-      text-wrap: nowrap;
-    }
   }
 
   .priority {
