@@ -60,7 +60,9 @@ onUnmounted(() => {
         <span>placeholder</span>
         <button class="new-project" @click="newTicketOpen = true">+</button>
       </div>
-      <Loading v-if="ticketsLoading" />
+      <transition>
+        <Loading v-if="ticketsLoading" />
+      </transition>
       <TicketRow class="row" v-for="ticket in tickets" :data="ticket" @click="handleEditTicket(ticket)"/>
      </section>
     <NewTicketDrawer :project="projectData" :is-open="newTicketOpen" @close="newTicketOpen = false" />

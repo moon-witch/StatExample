@@ -43,12 +43,14 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
-  async function updateSingleTicketField(field: string, newVal: string, ticketId: string) {
+  async function updateSingleTicketField(field: string, newVal: string, ticketId: string, projectId: string) {
     try {
       const { error } = await supabase
         .from('tasks')
         .update({ [field]: newVal })
         .eq('id', ticketId)
+
+      await getTicketsForProject(projectId)
 
       if (error) console.log(error)
     } catch (error) {

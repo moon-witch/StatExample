@@ -31,11 +31,11 @@ const userName = computed(() => {
 });
 
 const updatePriority = (newPrio: string, ticketId: string) => {
-  supabaseStore.updateSingleTicketField('priority', newPrio, ticketId)
+  supabaseStore.updateSingleTicketField('priority', newPrio, ticketId, props.data.project_id)
 }
 
 const updateStatus = (newStatus: string, ticketId: string) => {
-  supabaseStore.updateSingleTicketField('status', newStatus, ticketId)
+  supabaseStore.updateSingleTicketField('status', newStatus, ticketId, props.data.project_id)
 }
 
 onMounted(() => {
