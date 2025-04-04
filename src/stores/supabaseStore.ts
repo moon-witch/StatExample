@@ -100,6 +100,8 @@ export const useSupabaseStore = defineStore('supabase', () => {
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      window.location.reload()
     }
   }
 

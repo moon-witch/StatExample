@@ -21,10 +21,10 @@ onMounted(() => {
 <template>
   <nav class="nav">
     <ul class="list">
-      <NavItem :active="route.fullPath === '/'" link="/" title="Dashboard" icon="home"/>
+      <NavItem :active="route.fullPath === '/'" link="/" title="Projects" icon="home"/>
       <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
     </ul>
-    <div class="initials">{{ userInitials }}</div>
+    <RouterLink to="/account" class="initials">{{ userInitials }}</RouterLink>
   </nav>
 </template>
 
@@ -77,6 +77,14 @@ onMounted(() => {
     border-radius: $radius;
     padding: .5rem;
     margin-bottom: $spacer-sm;
+    background: $primary;
+    color: $text;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      border: 1px solid $lightgray;
+    }
   }
 }
 </style>

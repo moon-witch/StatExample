@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import {useSupabaseStore} from "@/stores/supabaseStore.ts";
-
-const supabaseStore = useSupabaseStore()
-
-const resetDemoData = () => {
-  supabaseStore.resetDemoData()
-}
 </script>
 
 
@@ -13,7 +6,6 @@ const resetDemoData = () => {
   <section class="action-bar">
     <img class="logo" type="logo" src="/favicon/favicon.svg" alt="logo"/>
     <span class="title">DevHub</span>
-    <button @click="resetDemoData">Reset data</button>
   </section>
 </template>
 
@@ -31,6 +23,7 @@ const resetDemoData = () => {
   gap: .5rem;
   border-bottom: 1px solid $darkgray;
   background: $primary;
+  z-index: 999;
 
   .logo {
     width: 45px;
