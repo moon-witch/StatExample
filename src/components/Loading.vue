@@ -1,9 +1,14 @@
 <script setup lang="ts">
-// No script needed for now
+defineProps({
+  backdrop: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <template>
-  <div class="loading-overlay">
+  <div class="loading-overlay" :class="{'backdrop': backdrop}">
     <img class="icon" src="/icons/loading.png" alt="loading icon" />
   </div>
 </template>
@@ -11,12 +16,15 @@
 <style scoped lang="scss">
 .loading-overlay {
   position: absolute;
-  inset: 0; // top: 0; right: 0; bottom: 0; left: 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4); // semi-transparent
-  z-index: 10; // Make sure it's above other children
+  z-index: 10;
+
+  &.backdrop {
+    background-color: rgba(0, 0, 0, 0.4); // semi-transparent
+  }
 
   .icon {
     width: 50px;

@@ -6,9 +6,11 @@ export const useSupabaseStore = defineStore('supabase', () => {
   const allProjects = ref<any[]>([])
   const projectData = ref<any[]>([])
   const ticketsLoading = ref<boolean>(true)
+  const projectsLoading = ref<boolean>(true)
 
   async function getAllProjects() {
     try {
+      projectsLoading.value = true
       const { data } = await supabase
         .from('projects')
         .select()
@@ -18,6 +20,8 @@ export const useSupabaseStore = defineStore('supabase', () => {
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      projectsLoading.value = false
     }
   }
 
@@ -103,6 +107,7 @@ export const useSupabaseStore = defineStore('supabase', () => {
     allProjects,
     projectData,
     ticketsLoading,
+    projectsLoading,
     getAllProjects,
     resetTicketData,
     getTicketsForProject,

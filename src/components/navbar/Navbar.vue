@@ -44,7 +44,7 @@ onMounted(() => {
   transition: $transition;
   border-top: 1px solid $darkgray;
   border-right: 1px solid $darkgray;
-  z-index: 9;
+  z-index: 999;
 
   &:hover {
     width: 150px;

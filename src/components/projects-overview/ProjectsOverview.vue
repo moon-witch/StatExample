@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSupabaseStore } from "@/stores/supabaseStore.ts";
 import {computed, onMounted, ref, watch} from "vue";
+import Loading from "@/components/Loading.vue";
 
 const supabaseStore = useSupabaseStore();
 
@@ -12,6 +13,10 @@ const allProjects = computed(() => {
   return supabaseStore.allProjects
 })
 
+const projectsLoading = computed(() => {
+  return supabaseStore.projectsLoading
+})
+
 onMounted(() => {
   getProjects()
 })
@@ -21,6 +26,9 @@ onMounted(() => {
   <div>
     <h1>Your projects</h1>
     <section class="projects-container">
+      <transition>
+        <Loading v-if="projectsLoading" backdrop />
+      </transition>
       <article v-for="project in allProjects" class="project">
         <RouterLink :to="`/project/${project.id}`">
           <h2 class="name">{{ project.name }}</h2>
