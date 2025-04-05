@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import TicketRow from "@/components/ticket-overview/TicketRow.vue";
@@ -7,14 +7,23 @@ import Loading from "@/components/Loading.vue";
 import { sortArrayOfObjects } from "@/helpers/sortArrayOfObjects.ts";
 import NewTicketDrawer from "@/components/drawer/NewTicketDrawer.vue";
 import EditTicketDrawer from "@/components/drawer/EditTicketDrawer.vue";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import DefaultModal from "@/components/modal/DefaultModal.vue";
 
 const route = useRoute()
+const router = useRouter()
 const supabaseStore = useSupabaseStore()
 
 const projectId = computed(() => Number(route.params.id))
 const projectData = computed(() => {
   return supabaseStore.allProjects.find((project) => project.id === projectId.value)
 })
+
+const deleteConfirmationOpen = ref<boolean>(false)
+const deleteProject = () => {
+  supabaseStore.deleteProject(projectId.value)
+  router.push('/projects')
+}
 
 const newTicketOpen = ref<boolean>(false)
 const editTicketOpen = ref<boolean>(false)
@@ -54,10 +63,20 @@ onUnmounted(() => {
           <time>{{ projectData.end_date }}</time>
         </div>
       </header>
+      <DefaultButton @click="deleteConfirmationOpen = true">Delete project</DefaultButton>
+      <DefaultModal class="modal" :is-open="deleteConfirmationOpen" @close="deleteConfirmationOpen = false">
+        <h4>Delete project: {{ projectData.name }}</h4>
+        <p>You are about to delete the project <span class="name">{{ projectData.name }}</span>.</p>
+        <p class="warning">Caution: This action is irreversible!</p>
+        <div class="buttons">
+          <DefaultButton @click="deleteProject">Delete</DefaultButton>
+          <DefaultButton @click="deleteConfirmationOpen = false">Cancel</DefaultButton>
+        </div>
+      </DefaultModal>
     </div>
     <section class="tickets">
       <div class="ticket-actionbar">
-        <span>placeholder</span>
+        <span>Tickets</span>
         <button class="new-ticket" @click="newTicketOpen = true">+</button>
       </div>
       <transition>
@@ -75,6 +94,9 @@ onUnmounted(() => {
 .header-wrapper {
   padding-bottom: $spacer-sm;
   border-bottom: 1px solid $darkgray;
+  display: flex;
+  gap: $spacer-sm;
+  align-items: flex-start;
 
   .header {
     border: 1px solid $darkgray;
@@ -94,6 +116,22 @@ onUnmounted(() => {
       opacity: .75;
       margin-top: $spacer-sm;
       font-size: .9rem;
+    }
+  }
+
+  .modal {
+    .name {
+      font-weight: bold;
+    }
+
+    .warning {
+      color: $danger;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-start;
+      gap: $spacer-sm;
     }
   }
 }

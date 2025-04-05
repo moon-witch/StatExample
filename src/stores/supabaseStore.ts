@@ -39,6 +39,19 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
+  async function deleteProject(id: number) {
+    try {
+      await supabase
+        .from('projects')
+        .delete()
+        .eq('id', id)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      await getAllProjects()
+    }
+  }
+
   function resetTicketData() {
     projectData.value = []
   }
@@ -105,6 +118,19 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
+  async function deleteTicket(id: number, projectId: string) {
+    try {
+      await supabase
+        .from('tasks')
+        .delete()
+        .eq('id', id)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      await getTicketsForProject(projectId)
+    }
+  }
+
   async function resetDemoData() {
     try {
       const { error } = await supabase.rpc('reset_demo_data')
@@ -126,10 +152,12 @@ export const useSupabaseStore = defineStore('supabase', () => {
     projectsLoading,
     getAllProjects,
     createNewProject,
+    deleteProject,
     resetTicketData,
     getTicketsForProject,
     updateSingleTicketField,
     updateTicketData,
     createNewTicket,
+    deleteTicket,
     resetDemoData }
 })

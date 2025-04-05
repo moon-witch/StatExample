@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import Drawer from "@/components/drawer/Drawer.vue";
 import {useUserStore} from "@/stores/userStore.ts";
 import CustomSelect from "@/components/select/Select.vue";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
 const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done']
@@ -92,7 +93,7 @@ onMounted(() => {
   <Drawer :is-open="showDrawer" @close="closeDrawer">
     <h2>Create new ticket</h2>
     <p v-if="project">in {{ project.name }}</p>
-    <form @submit.prevent="handleSubmit" class="ticket-form">
+    <form @submit.prevent class="ticket-form">
       <label>
         Title
         <input v-model="form.title" type="text" />
@@ -130,7 +131,7 @@ onMounted(() => {
         <span v-if="errors.assigned_to" class="error">{{ errors.assigned_to }}</span>
       </label>
 
-      <button type="submit">Create Ticket</button>
+      <DefaultButton class="create-button" @click="handleSubmit">Create Ticket</DefaultButton>
     </form>
   </Drawer>
 </template>
@@ -193,22 +194,8 @@ h2 {
       }
     }
   }
-
-  button[type='submit'] {
-    align-self: flex-start;
-    margin-top: $spacer-sm;
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: $primary;
-    color: $text;
-    border-radius: $radius;
-    cursor: pointer;
-    font-weight: bold;
-    transition: $transition;
-
-    &:hover {
-      background-color: $darkgray;
-    }
+  .create-button {
+    margin-top: $spacer-md;
   }
 }
 </style>

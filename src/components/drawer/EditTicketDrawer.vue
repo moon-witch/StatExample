@@ -6,6 +6,8 @@ import CustomSelect from "@/components/select/Select.vue";
 import {useSupabaseStore} from "@/stores/supabaseStore.ts";
 import {getInitials} from "@/helpers/getInitials.ts";
 import {useUserName} from "@/composables/useUserName.ts";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import DefaultModal from "@/components/modal/DefaultModal.vue";
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high'];
 const STATUS_OPTIONS = ['to-do', 'in progress', 'in review', 'done']
@@ -94,6 +96,12 @@ async function handleSubmit() {
   closeDrawer()
 }
 
+const deleteTicketModalOpen = ref(false)
+const deleteTicket = () => {
+  supabaseStore.deleteTicket(props.ticket.id, props.project.id)
+  closeDrawer()
+}
+
 onMounted(() => {
   userStore.getUserList()
 })
@@ -120,7 +128,7 @@ watch(
   <Drawer :is-open="showDrawer" @close="closeDrawer">
     <h2>Edit ticket <span v-if="ticket">{{ ticket.id }}</span></h2>
     <p v-if="project">in {{ project.name }}</p>
-    <form @submit.prevent="handleSubmit" class="ticket-form">
+    <form @submit.prevent class="ticket-form">
       <label>
         Title
         <input v-model="form.title" type="text" />
@@ -158,8 +166,20 @@ watch(
         <span v-if="errors.assigned_to" class="error">{{ errors.assigned_to }}</span>
       </label>
 
-      <button type="submit">Save changes</button>
-    </form>
+      <div class="buttons">
+        <DefaultButton @click="handleSubmit">Save changes</DefaultButton>
+        <DefaultButton @click="deleteTicketModalOpen = true">Delete ticket</DefaultButton>
+      </div>
+      <DefaultModal class="modal" :is-open="deleteTicketModalOpen" @close="deleteTicketModalOpen = false" >
+        <h4>Delete ticket: {{ ticket.id }}</h4>
+        <p>You are about to delete the ticket <span class="name">{{ ticket.id }}</span>.</p>
+        <p class="warning">Caution: This action is irreversible!</p>
+        <div class="buttons">
+          <DefaultButton @click="deleteTicket">Delete</DefaultButton>
+          <DefaultButton @click="deleteTicketModalOpen = false">Cancel</DefaultButton>
+        </div>
+      </DefaultModal>
+      </form>
   </Drawer>
 </template>
 
@@ -223,20 +243,26 @@ h2 {
     }
   }
 
-  button[type='submit'] {
-    align-self: flex-start;
-    margin-top: $spacer-sm;
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: $primary;
-    color: $text;
-    border-radius: $radius;
-    cursor: pointer;
-    font-weight: bold;
-    transition: $transition;
+  .buttons {
+    display: flex;
+    gap: $spacer-sm;
+    margin-top: $spacer-md;
+  }
 
-    &:hover {
-      background-color: $darkgray;
+
+  .modal {
+    .name {
+      font-weight: bold;
+    }
+
+    .warning {
+      color: $danger;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-start;
+      gap: $spacer-sm;
     }
   }
 }
