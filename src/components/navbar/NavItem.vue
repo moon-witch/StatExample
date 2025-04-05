@@ -36,7 +36,7 @@ const iconPath = computed(() => {
 
 <style scoped lang="scss">
 .item {
-  margin: .5rem auto;
+  margin: .25rem auto;
   border-radius: $radius;
   width: 100%;
   transition: $transition;

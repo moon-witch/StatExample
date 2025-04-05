@@ -21,7 +21,8 @@ onMounted(() => {
 <template>
   <nav class="nav">
     <ul class="list">
-      <NavItem :active="route.fullPath === '/'" link="/" title="Projects" icon="home"/>
+      <NavItem :active="route.fullPath === '/'" link="/" title="Dashboard" icon="home"/>
+      <NavItem :active="route.fullPath === '/projects'" link="/projects" title="Projects" icon="iteration"/>
       <NavItem :active="route.fullPath === '/about'" link="/about" title="About" icon="info"/>
     </ul>
     <RouterLink to="/account" class="initials">{{ userInitials }}</RouterLink>

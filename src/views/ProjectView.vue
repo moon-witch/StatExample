@@ -63,6 +63,7 @@ onUnmounted(() => {
       <transition>
         <Loading v-if="ticketsLoading" backdrop />
       </transition>
+      <div v-if="tickets.length === 0" class="no-tickets">No tickets</div>
       <TicketRow class="row" v-for="ticket in tickets" :data="ticket" @click="handleEditTicket(ticket)"/>
      </section>
     <NewTicketDrawer :project="projectData" :is-open="newTicketOpen" @close="newTicketOpen = false" />
@@ -138,6 +139,13 @@ onUnmounted(() => {
       }
     }
   }
+
+  .no-tickets {
+    padding-top: $spacer-sm;
+    align-self: center;
+    opacity: .7;
+  }
+
   .row {
     margin: 0 $spacer-sm;
 
