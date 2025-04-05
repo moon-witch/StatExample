@@ -2,8 +2,12 @@
 import { useSupabaseStore } from "@/stores/supabaseStore.ts";
 import {computed, onMounted, ref, watch} from "vue";
 import Loading from "@/components/Loading.vue";
+import DefaultButton from "@/components/buttons/DefaultButton.vue";
+import NewProjectDrawer from "@/components/drawer/NewProjectDrawer.vue";
 
 const supabaseStore = useSupabaseStore();
+
+const drawerOpen = ref(false);
 
 const getProjects = () => {
   supabaseStore.getAllProjects()
@@ -25,6 +29,10 @@ onMounted(() => {
 <template>
   <div>
     <h1>Your projects</h1>
+    <DefaultButton class="new-project" @click="drawerOpen = true">
+      New project
+    </DefaultButton>
+    <NewProjectDrawer :is-open="drawerOpen" @close="drawerOpen = false" />
     <section class="projects-container">
       <transition>
         <Loading v-if="projectsLoading" backdrop />
@@ -45,6 +53,10 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.new-project {
+  margin-bottom: $spacer-sm;
+}
+
 .projects-container {
   display: flex;
   flex-wrap: wrap;

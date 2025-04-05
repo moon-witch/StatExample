@@ -25,6 +25,20 @@ export const useSupabaseStore = defineStore('supabase', () => {
     }
   }
 
+  async function createNewProject(newProjectData: Record<string, any>) {
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .insert(newProjectData)
+
+      await getAllProjects()
+
+      if (error) console.log(error)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   function resetTicketData() {
     projectData.value = []
   }
@@ -111,6 +125,7 @@ export const useSupabaseStore = defineStore('supabase', () => {
     ticketsLoading,
     projectsLoading,
     getAllProjects,
+    createNewProject,
     resetTicketData,
     getTicketsForProject,
     updateSingleTicketField,
