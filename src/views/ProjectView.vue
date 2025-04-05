@@ -58,7 +58,7 @@ onUnmounted(() => {
     <section class="tickets">
       <div class="ticket-actionbar">
         <span>placeholder</span>
-        <button class="new-project" @click="newTicketOpen = true">+</button>
+        <button class="new-ticket" @click="newTicketOpen = true">+</button>
       </div>
       <transition>
         <Loading v-if="ticketsLoading" backdrop />
@@ -122,7 +122,7 @@ onUnmounted(() => {
     z-index: 5;
     border-bottom: 1px solid $darkgray;
 
-    .new-project {
+    .new-ticket {
       align-self: end;
       border: 1px solid $darkgray;
       border-radius: $radius;

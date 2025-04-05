@@ -91,7 +91,8 @@ watch(profileData, (value) => {
                   @click="handleEditButton('first_name', firstName)"
                   :aria-label="isEditingFirstName ? 'Save first name' : 'Edit first name'"
                 >
-                  {{ isEditingFirstName ? '✔️' : '✏️' }}
+                  <img class="icon" v-if="isEditingFirstName" src="/icons/check.png" alt="save first name"/>
+                  <img class="icon" v-else src="/icons/pen.png" alt="edit first name"/>
                 </button>
               </div>
             </div>
@@ -111,7 +112,8 @@ watch(profileData, (value) => {
                   @click="handleEditButton('last_name', lastName)"
                   :aria-label="isEditingLastName ? 'Save last name' : 'Edit last name'"
                 >
-                  {{ isEditingLastName ? '✔️' : '✏️' }}
+                  <img class="icon" v-if="isEditingLastName" src="/icons/check.png" alt="save last name"/>
+                  <img class="icon" v-else src="/icons/pen.png" alt="edit last name"/>
                 </button>
               </div>
             </div>
@@ -141,7 +143,8 @@ watch(profileData, (value) => {
                 @click="handleEditButton('personal_website', website)"
                 :aria-label="isEditingWebsite ? 'Save website' : 'Edit website'"
               >
-                {{ isEditingWebsite ? '✔️' : '✏️' }}
+                <img class="icon" v-if="isEditingWebsite" src="/icons/check.png" alt="save website"/>
+                <img class="icon" v-else src="/icons/pen.png" alt="edit website"/>
               </button>
             </div>
           </div>
@@ -247,6 +250,11 @@ watch(profileData, (value) => {
             background: $primary;
             border: none;
             cursor: pointer;
+
+            .icon {
+              width: 20px;
+              filter: invert(.7);
+            }
           }
         }
       }

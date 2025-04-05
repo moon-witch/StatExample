@@ -32,7 +32,6 @@ onMounted(() => {
 .view-container {
   margin-top: 100px;
   padding: 0 $spacer-md;
-  position: relative;
   overflow-x: hidden;
 }
 </style>
